@@ -1,5 +1,5 @@
 # codemagic.yaml
-# FINAL VERSION - Adds execute permission to gradlew script.
+# FINAL VERSION - Adds execute permission to gradlew script and fixes autolinking issue
 
 workflows:
   android-release-build:
@@ -14,16 +14,14 @@ workflows:
 
     scripts:
       - name: Install npm dependencies and generate autolinking
-  script: |
-    npm install
-    npx react-native config
+        script: |
+          npm install
+          npx react-native config
 
       - name: Build Android release APK
         script: | 
           cd android
-          # Grant execute permission to the gradlew script
           chmod +x ./gradlew 
-          # Now, run the build command
           ./gradlew assembleRelease
           
     artifacts:

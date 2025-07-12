@@ -19,10 +19,18 @@ workflows:
           ./gradlew clean
           cd ..
 
-      - name: "DEBUG: Log react-native config output"
+      - name: "Log react-native config output"
         script: |
           npx react-native config > config-output.json
           cat config-output.json
+
+      - name: "Override react-native config globally"
+        script: |
+          mkdir -p node_modules/.bin
+          echo '#!/bin/bash' > node_modules/.bin/react-native
+          echo 'if [[ "$1" == "config" ]]; then cat ./config-output.json; else npx react-native "$@"; fi' >> node_modules/.bin/react-native
+          chmod +x node_modules/.bin/react-native
+          export PATH=$(pwd)/node_modules/.bin:$PATH
 
       - name: "Generate autolinking.json via Gradle (with fallback)"
         script: |
@@ -40,6 +48,7 @@ workflows:
 
       - name: "Build Android release APK"
         script: |
+          export PATH=$(pwd)/node_modules/.bin:$PATH
           cd android
           chmod +x ./gradlew
           ./gradlew assembleRelease

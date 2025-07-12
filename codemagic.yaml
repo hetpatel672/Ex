@@ -1,21 +1,29 @@
 # codemagic.yaml
+# FINAL VERSION - Automatically uses the default free Linux machine.
 
 workflows:
   android-release-build:
     name: Android Release Build
-    instance_type: linux  # This is the correct line
+    # The 'instance_type' line has been REMOVED.
+    # Codemagic will now default to the standard free machine.
     max_build_duration: 60
 
     environment:
+      # This group is essential. It tells Codemagic to use the keystore
+      # you set up in the Codemagic UI.
       groups:
         - android_signing 
+      
+      # Define environment variables for the signing process.
+      # Codemagic will automatically populate these values from your 'android_signing' group.
       vars:
-        PACKAGE_NAME: "com.expe"
+        PACKAGE_NAME: "com.expe" # As defined in your app/build.gradle
 
     scripts:
       - name: Install npm dependencies
         script: | 
           npm install
+
       - name: Build Android release APK
         script: | 
           cd android

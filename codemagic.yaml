@@ -1,5 +1,5 @@
 # codemagic.yaml
-# Clean build setup without extra packages
+# Clean build setup without extra packages + Fix gradlew permission error
 
 workflows:
   android-release-build:
@@ -18,12 +18,14 @@ workflows:
           rm -rf node_modules android/.gradle android/build
           npm install
           cd android
+          chmod +x ./gradlew
           ./gradlew clean
+          cd ..
 
       - name: Build Android release APK
         script: | 
           cd android
-          chmod +x ./gradlew 
+          chmod +x ./gradlew
           ./gradlew assembleRelease
 
     artifacts:

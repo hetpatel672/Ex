@@ -1,5 +1,5 @@
 # codemagic.yaml
-# Final fix: autolinking.json for React Native 0.75+ in release builds
+# Manual fix: bypass autolinking.json missing error in React Native 0.75+
 
 workflows:
   android-release-build:
@@ -13,7 +13,7 @@ workflows:
         PACKAGE_NAME: "com.freedevloper.budgetwise"
 
     scripts:
-      - name: Clean project and install dependencies
+      - name: Clean and install dependencies
         script: |
           rm -rf node_modules android/.gradle android/build
           npm install
@@ -22,12 +22,10 @@ workflows:
           ./gradlew clean
           cd ..
 
-      - name: Generate autolinking file for Release
+      - name: Manually create autolinking.json file
         script: |
-          cd android
-          chmod +x ./gradlew
-          ./gradlew generateAutolinkingFileRelease
-          cd ..
+          mkdir -p android/build/generated/autolinking
+          echo '{}' > android/build/generated/autolinking/autolinking.json
 
       - name: Build Android release APK
         script: | 

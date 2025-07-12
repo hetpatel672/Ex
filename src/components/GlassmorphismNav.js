@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated, Dimensions } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { shadows } from '../theme/colors';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -72,7 +72,7 @@ const GlassmorphismNav = ({ activeTab, onTabChange }) => {
                 activeOpacity={0.7}
               >
                 <View style={styles.tabContent}>
-                  <Ionicons
+                  <Icon
                     name={tab.icon}
                     size={20}
                     color={isActive ? 'white' : 'rgba(107, 114, 128, 0.8)'}

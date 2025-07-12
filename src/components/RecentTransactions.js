@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
+import LinearGradient from 'react-native-linear-gradient';
 import DatabaseService from '../services/DatabaseService';
 import CurrencyService from '../services/CurrencyService';
 import { shadows } from '../theme/colors';
@@ -79,7 +79,7 @@ const RecentTransactions = ({ limit = 5, onTransactionPress }) => {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
-          <Ionicons 
+          <Icon 
             name={getCategoryIcon(item.category, item.type)} 
             size={20} 
             color="white" 
@@ -110,7 +110,7 @@ const RecentTransactions = ({ limit = 5, onTransactionPress }) => {
 
   const renderEmptyState = () => (
     <View style={styles.emptyState}>
-      <Ionicons name="receipt-outline" size={48} color="#9ca3af" />
+      <Icon name="receipt-outline" size={48} color="#9ca3af" />
       <Text style={styles.emptyStateText}>No transactions yet</Text>
       <Text style={styles.emptyStateSubtext}>
         Start by adding your first transaction

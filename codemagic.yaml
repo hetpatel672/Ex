@@ -19,6 +19,11 @@ workflows:
           ./gradlew clean
           cd ..
 
+      - name: DEBUG: Log react-native config output
+        script: |
+          npx react-native config > config-output.json
+          cat config-output.json
+
       - name: Generate autolinking.json via Gradle task
         script: |
           cd android
@@ -33,4 +38,5 @@ workflows:
           ./gradlew assembleRelease
 
     artifacts:
+      - config-output.json
       - android/app/build/outputs/apk/release/*.apk

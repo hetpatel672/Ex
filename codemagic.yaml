@@ -1,5 +1,5 @@
 # codemagic.yaml
-# Fix for autolinking.json error in React Native 0.75+
+# Final fix: autolinking.json for React Native 0.75+ in release builds
 
 workflows:
   android-release-build:
@@ -22,11 +22,11 @@ workflows:
           ./gradlew clean
           cd ..
 
-      - name: Generate autolinking.json
+      - name: Generate autolinking file for Release
         script: |
           cd android
           chmod +x ./gradlew
-          ./gradlew generateAutolinkingFileDebug
+          ./gradlew generateAutolinkingFileRelease
           cd ..
 
       - name: Build Android release APK

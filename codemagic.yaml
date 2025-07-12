@@ -1,6 +1,3 @@
-# codemagic.yaml
-# Manual fix: bypass autolinking.json missing error in React Native 0.75+
-
 workflows:
   android-release-build:
     name: Android Release Build
@@ -22,10 +19,19 @@ workflows:
           ./gradlew clean
           cd ..
 
-      - name: Manually create autolinking.json file
+      - name: Patch react-native config output (for RNGP)
         script: |
-          mkdir -p android/build/generated/autolinking
-          echo '{}' > android/build/generated/autolinking/autolinking.json
+          echo '{
+            "root": ".",
+            "project": {
+              "android": {
+                "packageName": "'"$PACKAGE_NAME"'"
+              }
+            }
+          }' > rn-config.json
+
+          # Replace npx react-native config with our custom file
+          echo "module.exports = require('./rn-config.json');" > react-native.config.js
 
       - name: Build Android release APK
         script: | 

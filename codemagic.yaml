@@ -32,12 +32,13 @@ workflows:
 
           echo "module.exports = require('./rn-config.json');" > react-native.config.js
 
-      - name: Manually generate autolinking file (React Native 0.75+ fix)
+      - name: Manually create autolinking.json fallback
         script: |
-          cd android
-          chmod +x ./gradlew
-          ./gradlew generateAutolinkingFileRelease
-          cd ..
+          mkdir -p android/build/generated/autolinking
+          echo '{
+            "modules": [],
+            "targets": []
+          }' > android/build/generated/autolinking/autolinking.json
 
       - name: Build Android release APK
         script: | 

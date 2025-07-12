@@ -24,12 +24,13 @@ workflows:
           npx react-native config > config-output.json
           cat config-output.json
 
-      - name: "Generate autolinking.json via Gradle"
+      - name: "Generate autolinking.json via Gradle (with fallback)"
         script: |
           cd android
           chmod +x ./gradlew
           ./gradlew generateAutolinkingFileRelease || true
           cd ..
+          mkdir -p android/build/generated/autolinking
           if [ ! -f android/build/generated/autolinking/autolinking.json ]; then
             echo '{
               "modules": [],

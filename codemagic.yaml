@@ -13,9 +13,10 @@ workflows:
         PACKAGE_NAME: "com.freedevloper.budgetwise"
 
     scripts:
-      - name: Install npm dependencies
-        script: | 
-          npm install
+      - name: Install npm dependencies and generate autolinking
+  script: |
+    npm install
+    npx react-native config
 
       - name: Build Android release APK
         script: | 

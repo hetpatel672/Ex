@@ -1,5 +1,5 @@
 # codemagic.yaml
-# Clean build setup without extra packages + Fix gradlew permission error
+# Fix for autolinking.json error in React Native 0.75+
 
 workflows:
   android-release-build:
@@ -20,6 +20,13 @@ workflows:
           cd android
           chmod +x ./gradlew
           ./gradlew clean
+          cd ..
+
+      - name: Generate autolinking.json
+        script: |
+          cd android
+          chmod +x ./gradlew
+          ./gradlew generateAutolinkingFileDebug
           cd ..
 
       - name: Build Android release APK

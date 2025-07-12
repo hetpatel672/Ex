@@ -1,6 +1,6 @@
 workflows:
   android-release-build:
-    name: Android Release Build
+    name: "Android Release Build"
     max_build_duration: 60
 
     environment:
@@ -10,7 +10,7 @@ workflows:
         PACKAGE_NAME: "com.budgetwisebare"
 
     scripts:
-      - name: Clean and install dependencies
+      - name: "Clean and install dependencies"
         script: |
           rm -rf node_modules android/.gradle android/build
           npm install
@@ -19,12 +19,12 @@ workflows:
           ./gradlew clean
           cd ..
 
-      - name: DEBUG: Log react-native config output
+      - name: "DEBUG: Log react-native config output"
         script: |
           npx react-native config > config-output.json
           cat config-output.json
 
-      - name: Generate autolinking.json via Gradle
+      - name: "Generate autolinking.json via Gradle"
         script: |
           cd android
           chmod +x ./gradlew
@@ -37,7 +37,7 @@ workflows:
             }' > android/build/generated/autolinking/autolinking.json
           fi
 
-      - name: Build Android release APK
+      - name: "Build Android release APK"
         script: |
           cd android
           chmod +x ./gradlew

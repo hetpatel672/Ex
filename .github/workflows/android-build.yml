@@ -1,0 +1,47 @@
+name: Android Release Build
+
+on:
+  workflow_dispatch:  # run manually from GitHub UI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      PACKAGE_NAME: "com.budgetwisebare"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Clean and build release
+        run: |
+          cd android
+          chmod +x ./gradlew
+          ./gradlew clean
+          ./gradlew generateAutolinkingFileRelease || true
+          mkdir -p build/generated/autolinking
+          if [ ! -f build/generated/autolinking/autolinking.json ]; then
+            echo '{"modules":[],"targets":[]}' > build/generated/autolinking/autolinking.json
+          fi
+          ./gradlew assembleRelease
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: android/app/build/outputs/apk/release/*.apk

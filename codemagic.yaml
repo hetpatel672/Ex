@@ -10,7 +10,7 @@ workflows:
       groups:
         - android_signing 
       vars:
-        PACKAGE_NAME: "com.freedevloper.budgetwise"
+        PACKAGE_NAME: "com.budgetwisebare"
 
     scripts:
       - name: Clean and install dependencies

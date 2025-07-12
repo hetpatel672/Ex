@@ -19,20 +19,12 @@ workflows:
           ./gradlew clean
           cd ..
 
-      - name: Inject static config to override RNGP autolinking check
+      - name: Generate autolinking.json via Gradle task
         script: |
-          echo '{
-            "root": ".",
-            "project": {
-              "android": {
-                "packageName": "'"$PACKAGE_NAME"'"
-              }
-            }
-          }' > rn-config.json
-
-          echo "require = function() { return require('./rn-config.json') }" > rn-inject.js
-
-          export NODE_OPTIONS="--require $(pwd)/rn-inject.js"
+          cd android
+          chmod +x ./gradlew
+          ./gradlew generateAutolinkingFileRelease
+          cd ..
 
       - name: Build Android release APK
         script: |

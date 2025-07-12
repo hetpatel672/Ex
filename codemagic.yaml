@@ -3,7 +3,7 @@
 workflows:
   android-release-build:
     name: Android Release Build
-    instance_type: linux_x1  # This is the correct line
+    instance_type: linux  # This is the correct line
     max_build_duration: 60
 
     environment:

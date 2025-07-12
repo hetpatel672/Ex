@@ -1,5 +1,5 @@
-import * as LocalAuthentication from 'expo-local-authentication';
-import * as SecureStore from 'expo-secure-store';
+import ReactNativeBiometrics from 'react-native-biometrics';
+import * as Keychain from 'react-native-keychain';
 import CryptoJS from 'crypto-js';
 import DatabaseService from './DatabaseService';
 

@@ -1,5 +1,5 @@
-import * as SQLite from 'expo-sqlite';
-import * as Crypto from 'expo-crypto';
+import SQLite from 'react-native-sqlite-storage';
+import CryptoJS from 'crypto-js';
 import { Transaction } from '../models/Transaction';
 import { Budget } from '../models/Budget';
 
@@ -13,7 +13,11 @@ class DatabaseService {
     if (this.isInitialized) return;
 
     try {
-      this.db = await SQLite.openDatabaseAsync('budgetwise.db');
+      SQLite.enablePromise(true);
+      this.db = await SQLite.openDatabase({
+        name: 'budgetwise.db',
+        location: 'default',
+      });
       await this.createTables();
       this.isInitialized = true;
       console.log('Database initialized successfully');
@@ -105,18 +109,18 @@ class DatabaseService {
       );
     `;
 
-    await this.db.execAsync(createTransactionsTable);
-    await this.db.execAsync(createBudgetsTable);
-    await this.db.execAsync(createCategoriesTable);
-    await this.db.execAsync(createSettingsTable);
-    await this.db.execAsync(createGoalsTable);
+    await this.db.executeSql(createTransactionsTable);
+    await this.db.executeSql(createBudgetsTable);
+    await this.db.executeSql(createCategoriesTable);
+    await this.db.executeSql(createSettingsTable);
+    await this.db.executeSql(createGoalsTable);
 
     // Create indexes for better performance
-    await this.db.execAsync('CREATE INDEX IF NOT EXISTS idx_transactions_date ON transactions(date);');
-    await this.db.execAsync('CREATE INDEX IF NOT EXISTS idx_transactions_category ON transactions(category);');
-    await this.db.execAsync('CREATE INDEX IF NOT EXISTS idx_transactions_type ON transactions(type);');
-    await this.db.execAsync('CREATE INDEX IF NOT EXISTS idx_budgets_category ON budgets(category);');
-    await this.db.execAsync('CREATE INDEX IF NOT EXISTS idx_budgets_period ON budgets(period);');
+    await this.db.executeSql('CREATE INDEX IF NOT EXISTS idx_transactions_date ON transactions(date);');
+    await this.db.executeSql('CREATE INDEX IF NOT EXISTS idx_transactions_category ON transactions(category);');
+    await this.db.executeSql('CREATE INDEX IF NOT EXISTS idx_transactions_type ON transactions(type);');
+    await this.db.executeSql('CREATE INDEX IF NOT EXISTS idx_budgets_category ON budgets(category);');
+    await this.db.executeSql('CREATE INDEX IF NOT EXISTS idx_budgets_period ON budgets(period);');
 
     // Insert default categories if they don't exist
     await this.insertDefaultCategories();
@@ -147,7 +151,7 @@ class DatabaseService {
       const id = 'cat_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
       const now = new Date().toISOString();
       
-      await this.db.runAsync(
+      await this.db.executeSql(
         `INSERT OR IGNORE INTO categories (id, name, type, color, icon, isActive, createdAt, updatedAt) 
          VALUES (?, ?, ?, ?, ?, 1, ?, ?)`,
         [id, category.name, category.type, category.color, category.icon, now, now]
@@ -168,7 +172,7 @@ class DatabaseService {
 
     const now = new Date().toISOString();
     for (const setting of defaultSettings) {
-      await this.db.runAsync(
+      await this.db.executeSql(
         `INSERT OR IGNORE INTO settings (key, value, updatedAt) VALUES (?, ?, ?)`,
         [setting.key, setting.value, now]
       );
@@ -180,7 +184,7 @@ class DatabaseService {
     await this.initialize();
     const txn = transaction instanceof Transaction ? transaction : new Transaction(transaction);
     
-    await this.db.runAsync(
+    await this.db.executeSql(
       `INSERT INTO transactions (id, amount, type, category, subcategory, description, date, account, currency, tags, location, receipt, recurring, recurringPattern, createdAt, updatedAt)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
@@ -243,7 +247,7 @@ class DatabaseService {
     const values = Object.values(updates);
     values.push(new Date().toISOString(), id);
 
-    await this.db.runAsync(
+    await this.db.executeSql(
       `UPDATE transactions SET ${setClause}, updatedAt = ? WHERE id = ?`,
       values
     );
@@ -251,7 +255,7 @@ class DatabaseService {
 
   async deleteTransaction(id) {
     await this.initialize();
-    await this.db.runAsync('DELETE FROM transactions WHERE id = ?', [id]);
+    await this.db.executeSql('DELETE FROM transactions WHERE id = ?', [id]);
   }
 
   // Budget methods
@@ -259,7 +263,7 @@ class DatabaseService {
     await this.initialize();
     const bdg = budget instanceof Budget ? budget : new Budget(budget);
     
-    await this.db.runAsync(
+    await this.db.executeSql(
       `INSERT INTO budgets (id, name, category, amount, spent, period, startDate, endDate, currency, color, icon, notifications, warningThreshold, isActive, createdAt, updatedAt)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
@@ -292,7 +296,7 @@ class DatabaseService {
 
   async updateBudgetSpending(category, amount) {
     await this.initialize();
-    await this.db.runAsync(
+    await this.db.executeSql(
       `UPDATE budgets SET spent = spent + ?, updatedAt = ? WHERE category = ? AND isActive = 1`,
       [amount, new Date().toISOString(), category]
     );
@@ -308,7 +312,7 @@ class DatabaseService {
   async setSetting(key, value) {
     await this.initialize();
     const now = new Date().toISOString();
-    await this.db.runAsync(
+    await this.db.executeSql(
       `INSERT OR REPLACE INTO settings (key, value, updatedAt) VALUES (?, ?, ?)`,
       [key, value, now]
     );
@@ -386,16 +390,16 @@ class DatabaseService {
     await this.initialize();
     
     // Start transaction
-    await this.db.execAsync('BEGIN TRANSACTION');
+    await this.db.executeSql('BEGIN TRANSACTION');
     
     try {
       // Clear existing data (optional - could be made configurable)
-      // await this.db.execAsync('DELETE FROM transactions');
-      // await this.db.execAsync('DELETE FROM budgets');
+      // await this.db.executeSql('DELETE FROM transactions');
+      // await this.db.executeSql('DELETE FROM budgets');
       
       // Import transactions
       for (const txn of backupData.data.transactions) {
-        await this.db.runAsync(
+        await this.db.executeSql(
           `INSERT OR REPLACE INTO transactions (id, amount, type, category, subcategory, description, date, account, currency, tags, location, receipt, recurring, recurringPattern, createdAt, updatedAt)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
@@ -408,7 +412,7 @@ class DatabaseService {
 
       // Import budgets
       for (const bdg of backupData.data.budgets) {
-        await this.db.runAsync(
+        await this.db.executeSql(
           `INSERT OR REPLACE INTO budgets (id, name, category, amount, spent, period, startDate, endDate, currency, color, icon, notifications, warningThreshold, isActive, createdAt, updatedAt)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
@@ -419,10 +423,10 @@ class DatabaseService {
         );
       }
 
-      await this.db.execAsync('COMMIT');
+      await this.db.executeSql('COMMIT');
       return true;
     } catch (error) {
-      await this.db.execAsync('ROLLBACK');
+      await this.db.executeSql('ROLLBACK');
       throw error;
     }
   }

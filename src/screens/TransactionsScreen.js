@@ -11,8 +11,8 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import DatabaseService from '../services/DatabaseService';
@@ -155,7 +155,7 @@ const TransactionsScreen = ({ navigation }) => {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
-          <Ionicons 
+          <Icon 
             name={getCategoryIcon(item.category, item.type)} 
             size={20} 
             color="white" 
@@ -216,7 +216,7 @@ const TransactionsScreen = ({ navigation }) => {
             colors={['#6366f1', '#8b5cf6']}
             style={styles.addButtonGradient}
           >
-            <Ionicons name="add" size={24} color="white" />
+            <Icon name="add" size={24} color="white" />
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -224,7 +224,7 @@ const TransactionsScreen = ({ navigation }) => {
       {/* Search Bar */}
       <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
-          <Ionicons name="search" size={20} color="#6b7280" />
+          <Icon name="search" size={20} color="#6b7280" />
           <TextInput
             style={styles.searchInput}
             placeholder="Search transactions..."
@@ -256,7 +256,7 @@ const TransactionsScreen = ({ navigation }) => {
         }
         ListEmptyComponent={() => (
           <View style={styles.emptyState}>
-            <Ionicons name="receipt-outline" size={64} color="#9ca3af" />
+            <Icon name="receipt-outline" size={64} color="#9ca3af" />
             <Text style={styles.emptyStateText}>No transactions found</Text>
             <Text style={styles.emptyStateSubtext}>
               {searchQuery ? 'Try adjusting your search' : 'Start by adding your first transaction'}
@@ -366,7 +366,7 @@ const TransactionsScreen = ({ navigation }) => {
                 <Text style={styles.dateButtonText}>
                   {formData.date.toLocaleDateString()}
                 </Text>
-                <Ionicons name="calendar" size={20} color="#6b7280" />
+                <Icon name="calendar" size={20} color="#6b7280" />
               </TouchableOpacity>
             </View>
           </ScrollView>

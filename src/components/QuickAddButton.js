@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { shadows } from '../theme/colors';
 
 const QuickAddButton = ({ type, onPress }) => {
@@ -67,7 +67,7 @@ const QuickAddButton = ({ type, onPress }) => {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
-          <Ionicons name={config.icon} size={24} color="white" />
+          <Icon name={config.icon} size={24} color="white" />
         </LinearGradient>
         <Text style={styles.label}>{config.label}</Text>
       </TouchableOpacity>

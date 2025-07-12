@@ -8,8 +8,8 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { LineChart, BarChart, ContributionGraph } from 'react-native-chart-kit';
 
 import { colors, gradients, shadows } from '../theme/colors';
@@ -119,10 +119,10 @@ const ReportsScreen = () => {
     <View style={[styles.statCard, shadows.medium]}>
       <View style={styles.statHeader}>
         <View style={[styles.statIcon, { backgroundColor: color + '20' }]}>
-          <Ionicons name={icon} size={20} color={color} />
+          <Icon name={icon} size={20} color={color} />
         </View>
         <View style={styles.statChange}>
-          <Ionicons
+          <Icon
             name={change >= 0 ? 'trending-up' : 'trending-down'}
             size={16}
             color={change >= 0 ? colors.success : colors.error}
@@ -170,7 +170,7 @@ const ReportsScreen = () => {
           ]}
           onPress={() => setSelectedReport(type.key)}
         >
-          <Ionicons
+          <Icon
             name={type.icon}
             size={20}
             color={selectedReport === type.key ? 'white' : colors.textSecondary}
@@ -308,13 +308,13 @@ const ReportsScreen = () => {
               style={[styles.exportButton, shadows.small]}
               onPress={() => exportReport('pdf')}
             >
-              <Ionicons name="document-text" size={20} color={colors.primary} />
+              <Icon name="document-text" size={20} color={colors.primary} />
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.exportButton, shadows.small]}
               onPress={() => exportReport('csv')}
             >
-              <Ionicons name="grid" size={20} color={colors.primary} />
+              <Icon name="grid" size={20} color={colors.primary} />
             </TouchableOpacity>
           </View>
         </View>
@@ -332,19 +332,19 @@ const ReportsScreen = () => {
         <View style={[styles.insightsCard, shadows.medium]}>
           <Text style={styles.insightsTitle}>AI Insights</Text>
           <View style={styles.insight}>
-            <Ionicons name="bulb" size={20} color={colors.warning} />
+            <Icon name="bulb" size={20} color={colors.warning} />
             <Text style={styles.insightText}>
               Your spending has increased by 15% this month compared to last month. Consider reviewing your Food and Entertainment categories.
             </Text>
           </View>
           <View style={styles.insight}>
-            <Ionicons name="trending-up" size={20} color={colors.success} />
+            <Icon name="trending-up" size={20} color={colors.success} />
             <Text style={styles.insightText}>
               Great job! Your savings rate has improved by 8.7% this period.
             </Text>
           </View>
           <View style={styles.insight}>
-            <Ionicons name="time" size={20} color={colors.info} />
+            <Icon name="time" size={20} color={colors.info} />
             <Text style={styles.insightText}>
               You tend to spend more on weekends. Consider setting weekend-specific budgets.
             </Text>

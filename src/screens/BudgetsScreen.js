@@ -11,8 +11,8 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import DatabaseService from '../services/DatabaseService';
 import CurrencyService from '../services/CurrencyService';
@@ -137,7 +137,7 @@ const BudgetsScreen = ({ navigation }) => {
           <View style={styles.budgetHeader}>
             <View style={styles.budgetInfo}>
               <View style={[styles.budgetIcon, { backgroundColor: item.color }]}>
-                <Ionicons name={item.icon} size={20} color="white" />
+                <Icon name={item.icon} size={20} color="white" />
               </View>
               <View style={styles.budgetDetails}>
                 <Text style={styles.budgetName}>{item.name}</Text>
@@ -197,13 +197,13 @@ const BudgetsScreen = ({ navigation }) => {
           {/* Warning Badge */}
           {item.isOverBudget() && (
             <View style={styles.warningBadge}>
-              <Ionicons name="warning" size={12} color="white" />
+              <Icon name="warning" size={12} color="white" />
               <Text style={styles.warningText}>Over Budget</Text>
             </View>
           )}
           {item.isNearLimit() && !item.isOverBudget() && (
             <View style={[styles.warningBadge, { backgroundColor: '#f59e0b' }]}>
-              <Ionicons name="alert-circle" size={12} color="white" />
+              <Icon name="alert-circle" size={12} color="white" />
               <Text style={styles.warningText}>Near Limit</Text>
             </View>
           )}
@@ -227,7 +227,7 @@ const BudgetsScreen = ({ navigation }) => {
             colors={['#6366f1', '#8b5cf6']}
             style={styles.addButtonGradient}
           >
-            <Ionicons name="add" size={24} color="white" />
+            <Icon name="add" size={24} color="white" />
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -264,7 +264,7 @@ const BudgetsScreen = ({ navigation }) => {
         }
         ListEmptyComponent={() => (
           <View style={styles.emptyState}>
-            <Ionicons name="pie-chart-outline" size={64} color="#9ca3af" />
+            <Icon name="pie-chart-outline" size={64} color="#9ca3af" />
             <Text style={styles.emptyStateText}>No budgets created</Text>
             <Text style={styles.emptyStateSubtext}>
               Create your first budget to start tracking your spending
@@ -379,7 +379,7 @@ const BudgetsScreen = ({ navigation }) => {
                     onPress={() => setFormData({ ...formData, color })}
                   >
                     {formData.color === color && (
-                      <Ionicons name="checkmark" size={16} color="white" />
+                      <Icon name="checkmark" size={16} color="white" />
                     )}
                   </TouchableOpacity>
                 ))}
@@ -399,7 +399,7 @@ const BudgetsScreen = ({ navigation }) => {
                     ]}
                     onPress={() => setFormData({ ...formData, icon })}
                   >
-                    <Ionicons 
+                    <Icon 
                       name={icon} 
                       size={20} 
                       color={formData.icon === icon ? 'white' : '#6b7280'} 

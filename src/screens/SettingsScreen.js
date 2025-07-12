@@ -10,8 +10,8 @@ import {
   Modal,
   TextInput,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import { colors, gradients, shadows } from '../theme/colors';
 
@@ -95,7 +95,7 @@ const SettingsScreen = () => {
     <TouchableOpacity style={[styles.settingItem, shadows.small]} onPress={onPress}>
       <View style={styles.settingLeft}>
         <View style={[styles.settingIcon, { backgroundColor: colors.primary + '20' }]}>
-          <Ionicons name={icon} size={20} color={colors.primary} />
+          <Icon name={icon} size={20} color={colors.primary} />
         </View>
         <View style={styles.settingText}>
           <Text style={styles.settingTitle}>{title}</Text>
@@ -124,7 +124,7 @@ const SettingsScreen = () => {
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>{title}</Text>
             <TouchableOpacity onPress={onClose}>
-              <Ionicons name="close" size={24} color={colors.textSecondary} />
+              <Icon name="close" size={24} color={colors.textSecondary} />
             </TouchableOpacity>
           </View>
           <ScrollView style={styles.optionsList}>
@@ -147,7 +147,7 @@ const SettingsScreen = () => {
                   {option}
                 </Text>
                 {selectedValue === option && (
-                  <Ionicons name="checkmark" size={20} color={colors.primary} />
+                  <Icon name="checkmark" size={20} color={colors.primary} />
                 )}
               </TouchableOpacity>
             ))}
@@ -168,14 +168,14 @@ const SettingsScreen = () => {
         {/* Profile Section */}
         <View style={[styles.profileCard, shadows.medium]}>
           <View style={styles.profileAvatar}>
-            <Ionicons name="person" size={40} color="white" />
+            <Icon name="person" size={40} color="white" />
           </View>
           <View style={styles.profileInfo}>
             <Text style={styles.profileName}>John Doe</Text>
             <Text style={styles.profileEmail}>john.doe@example.com</Text>
           </View>
           <TouchableOpacity style={styles.editProfileButton}>
-            <Ionicons name="pencil" size={20} color={colors.primary} />
+            <Icon name="pencil" size={20} color={colors.primary} />
           </TouchableOpacity>
         </View>
 
@@ -229,7 +229,7 @@ const SettingsScreen = () => {
           subtitle={settings.currency}
           onPress={() => setShowCurrencyModal(true)}
           rightComponent={
-            <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+            <Icon name="chevron-forward" size={20} color={colors.textSecondary} />
           }
         />
         <SettingItem
@@ -238,7 +238,7 @@ const SettingsScreen = () => {
           subtitle={settings.language}
           onPress={() => setShowLanguageModal(true)}
           rightComponent={
-            <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+            <Icon name="chevron-forward" size={20} color={colors.textSecondary} />
           }
         />
 
@@ -263,7 +263,7 @@ const SettingsScreen = () => {
           subtitle="Create a backup of your data"
           onPress={handleBackup}
           rightComponent={
-            <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+            <Icon name="chevron-forward" size={20} color={colors.textSecondary} />
           }
         />
         <SettingItem
@@ -272,7 +272,7 @@ const SettingsScreen = () => {
           subtitle="Restore from backup"
           onPress={handleRestore}
           rightComponent={
-            <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+            <Icon name="chevron-forward" size={20} color={colors.textSecondary} />
           }
         />
         <SettingItem
@@ -281,7 +281,7 @@ const SettingsScreen = () => {
           subtitle="Export your data"
           onPress={handleExport}
           rightComponent={
-            <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+            <Icon name="chevron-forward" size={20} color={colors.textSecondary} />
           }
         />
 
@@ -298,7 +298,7 @@ const SettingsScreen = () => {
           title="Privacy Policy"
           onPress={() => Alert.alert('Privacy Policy', 'Privacy policy content would be shown here.')}
           rightComponent={
-            <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+            <Icon name="chevron-forward" size={20} color={colors.textSecondary} />
           }
         />
         <SettingItem
@@ -306,7 +306,7 @@ const SettingsScreen = () => {
           title="Terms of Service"
           onPress={() => Alert.alert('Terms of Service', 'Terms of service content would be shown here.')}
           rightComponent={
-            <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+            <Icon name="chevron-forward" size={20} color={colors.textSecondary} />
           }
         />
 
@@ -325,7 +325,7 @@ const SettingsScreen = () => {
             );
           }}
         >
-          <Ionicons name="trash" size={20} color={colors.error} />
+          <Icon name="trash" size={20} color={colors.error} />
           <Text style={styles.dangerButtonText}>Clear All Data</Text>
         </TouchableOpacity>
 

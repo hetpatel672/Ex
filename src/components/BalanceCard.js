@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { shadows } from '../theme/colors';
 
 const BalanceCard = ({ 
@@ -60,7 +60,7 @@ const BalanceCard = ({
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.iconContainer}>
-          <Ionicons name={icon} size={20} color="white" />
+          <Icon name={icon} size={20} color="white" />
         </View>
         <Text style={styles.title}>{title}</Text>
       </View>

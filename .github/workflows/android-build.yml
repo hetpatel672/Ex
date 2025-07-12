@@ -1,7 +1,7 @@
 name: Android Release Build
 
 on:
-  workflow_dispatch:  # run manually from GitHub UI
+  workflow_dispatch:
 
 jobs:
   build:
@@ -28,16 +28,30 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Clean and build release
+      - name: Inject fallback autolinking.json
         run: |
+          mkdir -p android/build/generated/autolinking
+          echo '{"modules":[],"targets":[]}' > android/build/generated/autolinking/autolinking.json
+
+      - name: Override react-native config
+        run: |
+          echo '{
+            "project": {
+              "android": {
+                "packageName": "com.budgetwisebare"
+              }
+            }
+          }' > config-output.json
+          mkdir -p node_modules/.bin
+          echo '#!/bin/bash' > node_modules/.bin/react-native
+          echo 'if [[ "$1" == "config" ]]; then cat config-output.json; else npx react-native "$@"; fi' >> node_modules/.bin/react-native
+          chmod +x node_modules/.bin/react-native
+
+      - name: Build Android release APK
+        run: |
+          export PATH=$(pwd)/node_modules/.bin:$PATH
           cd android
           chmod +x ./gradlew
-          ./gradlew clean
-          ./gradlew generateAutolinkingFileRelease || true
-          mkdir -p build/generated/autolinking
-          if [ ! -f build/generated/autolinking/autolinking.json ]; then
-            echo '{"modules":[],"targets":[]}' > build/generated/autolinking/autolinking.json
-          fi
           ./gradlew assembleRelease
 
       - name: Upload APK

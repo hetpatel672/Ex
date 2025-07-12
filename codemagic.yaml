@@ -1,23 +1,16 @@
 # codemagic.yaml
-# FINAL VERSION - Automatically uses the default free Linux machine.
+# FINAL VERSION - Adds execute permission to gradlew script.
 
 workflows:
   android-release-build:
     name: Android Release Build
-    # The 'instance_type' line has been REMOVED.
-    # Codemagic will now default to the standard free machine.
     max_build_duration: 60
 
     environment:
-      # This group is essential. It tells Codemagic to use the keystore
-      # you set up in the Codemagic UI.
       groups:
         - android_signing 
-      
-      # Define environment variables for the signing process.
-      # Codemagic will automatically populate these values from your 'android_signing' group.
       vars:
-        PACKAGE_NAME: "com.expe" # As defined in your app/build.gradle
+        PACKAGE_NAME: "com.expe"
 
     scripts:
       - name: Install npm dependencies
@@ -27,6 +20,9 @@ workflows:
       - name: Build Android release APK
         script: | 
           cd android
+          # Grant execute permission to the gradlew script
+          chmod +x ./gradlew 
+          # Now, run the build command
           ./gradlew assembleRelease
           
     artifacts:

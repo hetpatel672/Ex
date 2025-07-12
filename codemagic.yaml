@@ -5,7 +5,7 @@ workflows:
 
     environment:
       groups:
-        - android_signing 
+        - android_signing
       vars:
         PACKAGE_NAME: "com.budgetwisebare"
 
@@ -19,7 +19,7 @@ workflows:
           ./gradlew clean
           cd ..
 
-      - name: Patch react-native config output (for RNGP)
+      - name: Inject static config to override RNGP autolinking check
         script: |
           echo '{
             "root": ".",
@@ -30,18 +30,12 @@ workflows:
             }
           }' > rn-config.json
 
-          echo "module.exports = require('./rn-config.json');" > react-native.config.js
+          echo "require = function() { return require('./rn-config.json') }" > rn-inject.js
 
-      - name: Manually create autolinking.json fallback
-        script: |
-          mkdir -p android/build/generated/autolinking
-          echo '{
-            "modules": [],
-            "targets": []
-          }' > android/build/generated/autolinking/autolinking.json
+          export NODE_OPTIONS="--require $(pwd)/rn-inject.js"
 
       - name: Build Android release APK
-        script: | 
+        script: |
           cd android
           chmod +x ./gradlew
           ./gradlew assembleRelease

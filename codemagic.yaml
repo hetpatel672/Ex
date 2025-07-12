@@ -30,8 +30,14 @@ workflows:
             }
           }' > rn-config.json
 
-          # Replace npx react-native config with our custom file
           echo "module.exports = require('./rn-config.json');" > react-native.config.js
+
+      - name: Manually generate autolinking file (React Native 0.75+ fix)
+        script: |
+          cd android
+          chmod +x ./gradlew
+          ./gradlew generateAutolinkingFileRelease
+          cd ..
 
       - name: Build Android release APK
         script: | 

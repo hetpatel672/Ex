@@ -10,7 +10,7 @@ workflows:
       groups:
         - android_signing 
       vars:
-        PACKAGE_NAME: "com.expe"
+        PACKAGE_NAME: "com.freedevloper.budgetwise"
 
     scripts:
       - name: Install npm dependencies

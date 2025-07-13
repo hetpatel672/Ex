@@ -82,6 +82,13 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.core:core:1.13.1'
+            force 'androidx.core:core-ktx:1.13.1'
+        }
+    }
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -107,7 +114,10 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    implementation("com.facebook.react:flipper-integration")
+
+    // Force older androidx.core versions to avoid compatibility issues
+    implementation("androidx.core:core:1.13.1")
+    implementation("androidx.core:core-ktx:1.13.1")
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
